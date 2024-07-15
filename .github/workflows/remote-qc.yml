@@ -28,14 +28,14 @@ jobs:
           accessToken=$(echo $authResponse | jq -r '.access_token')
           echo "accessToken=$accessToken" >> $GITHUB_OUTPUT
 
-          
+
       - name: Set Commit SHA
         id: vars
         run: |
           echo "COMMIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
           COMMIT_SHA_STRING="${{ env.COMMIT_SHA }}"
       - name: Print Commit SHA
-        run: echo "The commit SHA is ${{ env.COMMIT_SHA }}
+        run: echo "The commit SHA is ${{ env.COMMIT_SHA }}"
 
       - name: Execute QC
         id: execute
