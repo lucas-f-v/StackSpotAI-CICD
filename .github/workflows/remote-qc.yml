@@ -47,8 +47,8 @@ jobs:
           --header "Authorization: Bearer ${{ steps.auth.outputs.accessToken }}" \
           --header 'Content-Type: application/json' \
           --data '{ "input_data": "print("hello world)" }')
-          execution_id=$(echo )
-          echo "execution_id=" >> 
+          execution_id=$(echo $execute_qc)
+          echo "execution_id=$execution_id" >> $GITHUB_OUTPUT
       - name: Callback QC
         run: |
           commandStatus="RUNNING"
