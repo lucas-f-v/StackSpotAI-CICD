@@ -34,11 +34,11 @@ jobs:
         run: |
           # Read all files in the repository and concatenate their contents
           CODE_CONTENT=$(find . -type f -exec cat {} +)
-          echo "code_content<<EOF" >> $GITHUB_ENV
-          echo "$CODE_CONTENT" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-
+          echo "code_content<<EOF" >> 
+          echo "" >> 
+          echo "EOF" >> 
+          echo "::set-output name=code_content::"
+      
       - name: Execute QC
         id: execute
         env:
@@ -47,9 +47,9 @@ jobs:
           execute_qc=$(curl --request POST "https://genai-code-buddy-api.stackspot.com/v1/quick-commands/create-execution/${STK_SLUG}" \
           --header "Authorization: Bearer ${{ steps.auth.outputs.accessToken }}" \
           --header 'Content-Type: application/json' \
-          --data "{ "input_data": "${CODE_CONTENT}\" }")
-          execution_id=$(echo $execute_qc)
-          echo "execution_id=$execution_id" >> $GITHUB_OUTPUT
+          --data "{ \"input_data\": \"${{ steps.read-files.outputs.code_content }}\" }")
+          execution_id=$(echo )
+          echo "execution_id=" >> 
       - name: Callback QC
         run: |
           commandStatus="RUNNING"
