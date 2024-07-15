@@ -28,16 +28,6 @@ jobs:
           accessToken=$(echo $authResponse | jq -r '.access_token')
           echo "accessToken=$accessToken" >> $GITHUB_OUTPUT
 
-
-      - name: Read code files
-        id: read-files
-        run: |
-          # Read all files in the repository and concatenate their contents
-          CODE_CONTENT=$(find . -type f -exec cat {} +)
-          echo "code_content<<EOF" >> $GITHUB_ENV
-          echo "$CODE_CONTENT" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-      
       - name: Execute QC
         id: execute
         env:
