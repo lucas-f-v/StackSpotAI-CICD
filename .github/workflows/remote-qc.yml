@@ -36,7 +36,7 @@ jobs:
           execute_qc=$(curl --request POST "https://genai-code-buddy-api.stackspot.com/v1/quick-commands/create-execution/${STK_SLUG}" \
           --header "Authorization: Bearer ${{ steps.auth.outputs.accessToken }}" \
           --header 'Content-Type: application/json' \
-          --data "{ \"input_data\": \"print("hello world")" }")
+          --data '{ "input_data": "print("hello world")" }')
           execution_id=$(echo )
           echo "execution_id=" >> 
       - name: Callback QC
