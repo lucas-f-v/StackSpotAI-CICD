@@ -49,21 +49,19 @@ jobs:
           --data '{ "input_data": "print("hello world)" }')
           execution_id=$(echo $execute_qc)
           echo "execution_id=$execution_id" >> $GITHUB_OUTPUT
-      - name: Callback QC
-        run: |
-          commandStatus="RUNNING"
-
-          while [[ "$commandStatus" == "RUNNING" ]]; do
-            statusResponse=$(curl --request GET "https://genai-code-buddy-api.stackspot.com/v1/quick-commands/callback/${{ steps.execute.outputs.execution_id }}" \
-              --header "Authorization: Bearer ${{ steps.auth.outputs.accessToken }}" \
-              --header 'Content-Type: application/json')
-            commandStatus=$(echo "$statusResponse" | jq -r '.progress.status')
-            result=$(echo "$statusResponse" | jq -r '.result | @json' -c)
-            echo "Current command status $commandStatus"
-            echo "Current result $result"
-            sleep 5
-          done
-
-          if [[ "$commandStatus" == "COMPLETED" ]]; then
-            echo $result 
-          fi
+    - name: Callback QC
+      run: |
+        commandStatus="RUNNING"
+        while [[ "" == "RUNNING" ]]; do
+          statusResponse=$(curl --request GET "https://genai-code-buddy-api.stackspot.com/v1/quick-commands/callback/${{ steps.execute.outputs.execution_id }}" \
+          --header "Authorization: Bearer ${{ steps.auth.outputs.accessToken }}" \
+          --header 'Content-Type: application/json')
+          commandStatus=$(echo "" | jq -r '.progress.status')
+          result=$(echo "" | jq -r '.result | @json' -c)
+          echo "Current command status "
+          echo "Current result "
+          sleep 5
+        done
+        if [[ "" == "COMPLETED" ]]; then
+          echo 
+        fi
