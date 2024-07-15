@@ -37,7 +37,7 @@ jobs:
           echo "code_content<<EOF" >> 
           echo "" >> 
           echo "EOF" >> 
-          echo "::set-output name=code_content::"
+          echo "::set-output name=code_content::$CODE_CONTENT"
       
       - name: Execute QC
         id: execute
