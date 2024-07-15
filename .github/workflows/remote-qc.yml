@@ -38,7 +38,7 @@ jobs:
     - name: Execute QC
       id: execute
       env:
-        STK_SLUG: code-review
+        STK_SLUG: lfv-test-rqc
       run: |
         input_data="${{ steps.read_code.outputs.code }}"
         execute_qc=$(curl --request POST "https://genai-code-buddy-api.stackspot.com/v1/quick-commands/create-execution/${STK_SLUG}" \
