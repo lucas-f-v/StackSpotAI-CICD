@@ -35,9 +35,7 @@ jobs:
           # Read all files in the repository and concatenate their contents
           CODE_CONTENT=$(find . -type f -exec cat {} +)
           echo "code_content<<EOF" >> 
-          echo "" >> 
           echo "EOF" >> 
-          echo "::set-output name=code_content::$CODE_CONTENT"
       
       - name: Execute QC
         id: execute
