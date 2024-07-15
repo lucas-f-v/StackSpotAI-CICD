@@ -27,6 +27,9 @@ jobs:
           --data-urlencode "client_secret=${STK_CLIENT_KEY}")
           accessToken=$(echo $authResponse | jq -r '.access_token')
           echo "accessToken=$accessToken" >> $GITHUB_OUTPUT
+      - name: Set Commit SHA
+        id: vars
+        run: echo "COMMIT_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
       - name: Execute QC
         id: execute
         env:
@@ -35,7 +38,7 @@ jobs:
           execute_qc=$(curl --request POST "https://genai-code-buddy-api.stackspot.com/v1/quick-commands/create-execution/${STK_SLUG}" \
           --header "Authorization: Bearer ${{ steps.auth.outputs.accessToken }}" \
           --header 'Content-Type: application/json' \
-          --data '{ "input_data": "teste" }')
+          --data '{ "input_data": "GITHUB_SHA" }')
           execution_id=$(echo $execute_qc)
           echo "execution_id=$execution_id" >> $GITHUB_OUTPUT
       - name: Callback QC
