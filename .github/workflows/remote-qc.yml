@@ -26,7 +26,7 @@ jobs:
         --data-urlencode "grant_type=client_credentials" \
         --data-urlencode "client_secret=${STK_CLIENT_KEY}")
         accessToken=$(echo  | jq -r '.access_token')
-        echo "accessToken=" >> 
+        echo "accessToken=$accessToken" >> $GITHUB_OUTPUT
 
     - name: Read committed code
       id: read_code
