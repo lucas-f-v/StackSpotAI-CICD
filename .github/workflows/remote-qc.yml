@@ -28,6 +28,16 @@ jobs:
           accessToken=$(echo $authResponse | jq -r '.access_token')
           echo "accessToken=$accessToken" >> $GITHUB_OUTPUT
 
+      - name: Print committed files
+        run: |
+          echo "Changed files in the commit:"
+          git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | while read file; do
+            echo "File: $file"
+            echo "Content:"
+            cat $file
+            echo "---------------------------------------"
+          done
+
       - name: Execute QC
         id: execute
         env:
@@ -36,7 +46,7 @@ jobs:
           execute_qc=$(curl --request POST "https://genai-code-buddy-api.stackspot.com/v1/quick-commands/create-execution/${STK_SLUG}" \
           --header "Authorization: Bearer ${{ steps.auth.outputs.accessToken }}" \
           --header 'Content-Type: application/json' \
-          --data '{ "input_data": "print("hello word")" }')
+          --data '{ "input_data": "print("hello world)" }')
           execution_id=$(echo )
           echo "execution_id=" >> 
       - name: Callback QC
