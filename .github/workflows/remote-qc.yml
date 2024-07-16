@@ -26,10 +26,29 @@ jobs:
           --data-urlencode "client_secret=${STK_CLIENT_KEY}")
           accessToken=$(echo $authResponse | jq -r '.access_token')
           echo "accessToken=$accessToken" >> $GITHUB_OUTPUT
+
+
+
+      - name: List affected files
+        id: list-files
+        run: |
+          AFFECTED_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
+          echo "affected_files=$AFFECTED_FILES" >> $GITHUB_ENV
+
+      - name: Use affected files
+        run: |
+          echo "Affected files: ${{ env.affected_files }}"
+
       - name: Print committed files
         run: |
           echo "Changed files in the commit:"\
           git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs -I {} sh -c 'echo "File: {}"; echo "Content:"; cat {}; echo "---------------------------------------"'
+
+
+
+
+
+
       - name: Execute QC
         id: execute
         env:
