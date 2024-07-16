@@ -41,7 +41,7 @@ jobs:
 
       - name: Print committed files
         run: |
-          echo "Changed files in the commit:"\
+          echo "Changed files in the commit:";\
           git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs -I {} sh -c 'echo "File: {}"; echo "Content:"; cat {}; echo "---------------------------------------"'
 
 
