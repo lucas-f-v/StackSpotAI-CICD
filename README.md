@@ -16,3 +16,5 @@ To change the Quick Command, you need to change the QC's slug on line 33 of the 
 <img src="https://github.com/user-attachments/assets/f985638b-df62-4237-9b57-a1ba1122401e" alt="nice-dog(2)" width="300"/>
 
 ![nice-dog(4)](https://github.com/user-attachments/assets/71c1a018-5079-4e75-8ed7-9546ee3a7bd6)
+
+bahahahha
