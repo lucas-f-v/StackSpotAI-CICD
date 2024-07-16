@@ -33,7 +33,7 @@ jobs:
           git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | while read file; do
             echo "File: $file"
             echo "Content:"
-            cat $file
+            echo cat $file
             echo "---------------------------------------"
           done
 
