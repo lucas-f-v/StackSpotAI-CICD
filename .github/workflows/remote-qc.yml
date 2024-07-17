@@ -27,7 +27,21 @@ jobs:
           accessToken=$(echo $authResponse | jq -r '.access_token')
           echo "accessToken=$accessToken" >> $GITHUB_OUTPUT
 
+      - uses: actions/checkout@v4
+        with: 
+            fetch-depth: 2 # mandatory to detect changes in files
 
+      - uses: lucas-f-v/StackSpotAI-CICD@v1
+        id: rqc
+        with:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
+          CLIENT_REALM: ${{ secrets.CLIENT_REALM }}
+          QC_SLUG: lfv-test-rqc
+          FILE_EXTENSION: md
+
+      - name: Check Remote Quick Command answer
+        run: echo ${{ toJSON(steps.rqc.outputs.rqc_result) }}
 
       - name: List affected files
         id: list-files
@@ -78,3 +92,5 @@ jobs:
           if [[ "$commandStatus" == "COMPLETED" ]]; then
             echo $result 
           fi
+      - name: Check Remote Quick Command answer
+        run: echo ${{ toJSON(steps.rqc.outputs.rqc_result) }}
