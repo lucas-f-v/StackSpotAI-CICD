@@ -19,7 +19,7 @@ jobs:
         with: 
           fetch-depth: 2
 
-      - uses: lucas-f-v/StackSpotAI-CICD@main
+      - uses: lucas-f-v/StackSpotAI-CICD/action.yml@main
         id: rqc
         with:
           CLIENT_ID: ${{ secrets.STK_CLIENT_ID }}
