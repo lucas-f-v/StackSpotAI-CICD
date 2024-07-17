@@ -1,16 +1,80 @@
-steps:
-    - uses: actions/checkout@v4
-      with: 
-          fetch-depth: 2 # mandatory to detect changes in files
+name: CI
 
-    - uses: lucas-f-v/StackSpotAI-CICD@v1
-      id: rqc
-      with:
-        CLIENT_ID: ${{ secrets.CLIENT_ID }}
-        CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
-        CLIENT_REALM: ${{ secrets.CLIENT_REALM }}
-        QC_SLUG: lfv-test-rqc #YOUR_REMOTE_QUICK_COMMAND_SLUG
-        FILE_EXTENSION: yml #YOUR_FILE_EXTENSION
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
-    - name: Check Remote Quick Command answer
-      run: echo ${{ toJSON(steps.rqc.outputs.rqc_result) }}
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Authentication
+        id: auth
+        env:
+          STK_CLIENT_REALM: ${{ secrets.STK_CLIENT_REALM }}
+          STK_CLIENT_ID: ${{ secrets.STK_CLIENT_ID }}
+          STK_CLIENT_KEY: ${{ secrets.STK_CLIENT_KEY }}
+        run: |
+          authResponse=$(curl --location --request POST "https://idm.stackspot.com/${STK_CLIENT_REALM}/oidc/oauth/token" \
+          --header "Content-Type: application/x-www-form-urlencoded" \
+          --data-urlencode "client_id=${STK_CLIENT_ID}" \
+          --data-urlencode "grant_type=client_credentials" \
+          --data-urlencode "client_secret=${STK_CLIENT_KEY}")
+          accessToken=$(echo $authResponse | jq -r '.access_token')
+          echo "accessToken=$accessToken" >> $GITHUB_OUTPUT
+
+
+
+      - name: List affected files
+        id: list-files
+        run: |
+          AFFECTED_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
+          echo "affected_files=$AFFECTED_FILES" >> $GITHUB_ENV
+
+      - name: Use affected files
+        run: |
+          echo "Affected files: ${{ env.affected_files }}"
+
+      - name: Print committed files
+        run: |
+          echo "Changed files in the commit:";\
+           git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs -I {} sh -c 'echo "File: {}"; echo "Content:"; cat {}; echo "---------------------------------------"'
+
+
+
+
+
+
+      - name: Execute QC
+        id: execute
+        env:
+          STK_SLUG: lfv-test-rqc
+        run: |
+          execute_qc=$(curl --request POST "https://genai-code-buddy-api.stackspot.com/v1/quick-commands/create-execution/${STK_SLUG}" \
+          --header "Authorization: Bearer ${{ steps.auth.outputs.accessToken }}" \
+          --header 'Content-Type: application/json' \
+          --data '{ "input_data": "print bananas" }')
+          execution_id=$(echo $execute_qc)
+          echo "execution_id=$execution_id" >> $GITHUB_OUTPUT
+      - name: Callback QC
+        run: |
+          commandStatus="RUNNING"
+
+          while [[ "$commandStatus" == "RUNNING" ]]; do
+            statusResponse=$(curl --request GET "https://genai-code-buddy-api.stackspot.com/v1/quick-commands/callback/${{ steps.execute.outputs.execution_id }}" \
+              --header "Authorization: Bearer ${{ steps.auth.outputs.accessToken }}" \
+              --header 'Content-Type: application/json')
+            commandStatus=$(echo "$statusResponse" | jq -r '.progress.status')
+            result=$(echo "$statusResponse" | jq -r '.result | @json' -c)
+            echo "Current command status $commandStatus"
+            echo "Current result $result"
+            sleep 5
+          done
+
+          if [[ "$commandStatus" == "COMPLETED" ]]; then
+            echo $result 
+          fi
