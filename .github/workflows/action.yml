@@ -11,15 +11,18 @@ permissions:
   issues: write
   pull-requests: write
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository with a fetch depth of 2
       - uses: actions/checkout@v4
         with: 
           fetch-depth: 2
 
-      - uses: lucas-f-v/StackSpotAI-CICD/action.yml@main
+      # Use the StackSpotAI-CICD action to run a remote quick command
+      - uses: lucas-f-v/StackSpotAI-CICD/CI@main
         id: rqc
         with:
           CLIENT_ID: ${{ secrets.STK_CLIENT_ID }}
@@ -28,8 +31,9 @@ jobs:
           QC_SLUG: lfv-test-rqc
           FILE_EXTENSION: .md
 
+      # Check the result of the Remote Quick Command
       - name: Check Remote Quick Command answer
         run: |
           for result in ${{ steps.rqc.outputs.rqc_result }}; do 
-            echo "Result $result"
+            echo "Result "
           done
