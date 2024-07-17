@@ -31,7 +31,7 @@ jobs:
         with: 
             fetch-depth: 2 # mandatory to detect changes in files
 
-      - uses: lucas-f-v/StackSpotAI-CICD@rollbacktest
+      - uses: lucas-f-v/StackSpotAI-CICD@main
         id: rqc
         with:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
