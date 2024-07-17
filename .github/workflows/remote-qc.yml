@@ -10,7 +10,7 @@ steps:
         CLIENT_KEY: ${{ secrets.CLIENT_KEY }}
         CLIENT_REALM: ${{ secrets.CLIENT_REALM }}
         QC_SLUG: lfv-test-rqc #YOUR_REMOTE_QUICK_COMMAND_SLUG
-        FILE_EXTENSION: remote-qc.yml #YOUR_FILE_EXTENSION
+        FILE_EXTENSION: yml #YOUR_FILE_EXTENSION
 
     - name: Check Remote Quick Command answer
       run: echo ${{ toJSON(steps.rqc.outputs.rqc_result) }}
