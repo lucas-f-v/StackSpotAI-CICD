@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 2
 
       # Use the StackSpotAI-CICD action to run a remote quick command
-      - uses: ./.github/workflows/action.yml
+      - uses: victorsilvazup/stackspot-ai-execute-rqc@main
         id: rqc
         with:
           CLIENT_ID: ${{ secrets.STK_CLIENT_ID }}
