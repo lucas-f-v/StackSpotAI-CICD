@@ -34,6 +34,5 @@ jobs:
       # Check the result of the Remote Quick Command
       - name: Check Remote Quick Command answer
         run: |
-          for result in ${{ steps.rqc.outputs.rqc_result }}; do 
-            echo "Result $result"
-          done
+          echo "Result ${{ steps.rqc.outputs.rqc_result }}"
+
