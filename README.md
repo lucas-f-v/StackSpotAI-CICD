@@ -17,4 +17,6 @@ To change the Quick Command, you need to change the QC's slug on line 33 of the 
 
 ![nice-dog(4)](https://github.com/user-attachments/assets/71c1a018-5079-4e75-8ed7-9546ee3a7bd6)
 
-bahahahha
+BANANA
+user=user
+pass=password
