@@ -43,6 +43,5 @@ jobs:
       # Check the result of the Remote Quick Command
       - name: Check Remote Quick Command answer
         run: |
-          echo "Result ${{ steps.rqc.outputs.rqc_result }}"
-          echo "Result ${{ steps.rqcommand.outputs.rqc_result }}"
-
+          echo "${{ steps.rqc.outputs.rqc_result }}" | python3 -c 'import json, sys; print(json.dumps(json.loads(sys.stdin.read()), indent=4))'
+          echo "${{ steps.rqc.outputs.rqc_result }}" | python3 -c 'import json, sys; print(json.dumps(json.loads(sys.stdin.read()), indent=4))'
