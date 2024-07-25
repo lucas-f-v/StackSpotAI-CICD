@@ -40,8 +40,12 @@ jobs:
           QC_SLUG: code-analysis
           FILE_EXTENSION: .yml
 
+      # Install jq
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
       # Check the result of the Remote Quick Command
       - name: Check Remote Quick Command answer
         run: |
-          echo "${{ steps.rqc.outputs.rqc_result }}" | python3 -c 'import json, sys; print(json.dumps(json.loads(sys.stdin.read()), indent=4))'
-          echo "${{ steps.rqcommand.outputs.rqc_result }}" | python3 -c 'import json, sys; print(json.dumps(json.loads(sys.stdin.read()), indent=4))'
+          echo "${{ steps.rqc.outputs.rqc_result }}" | jq .
+          echo "${{ steps.rqcommand.outputs.rqc_result }}" | jq .
