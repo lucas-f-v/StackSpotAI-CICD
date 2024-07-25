@@ -32,7 +32,7 @@ jobs:
           FILE_EXTENSION: .md      
       # Use the StackSpotAI-CICD action to run a remote quick command
       - uses: victorsilvazup/stackspot-ai-execute-rqc@main
-        id: rqc
+        id: rqcommand
         with:
           CLIENT_ID: ${{ secrets.STK_CLIENT_ID }}
           CLIENT_KEY: ${{ secrets.STK_CLIENT_KEY }}
