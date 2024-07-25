@@ -11,7 +11,6 @@ permissions:
   issues: write
   pull-requests: write
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,6 +29,7 @@ jobs:
           CLIENT_REALM: ${{ secrets.STK_CLIENT_REALM }}
           QC_SLUG: code-analysis
           FILE_EXTENSION: .md      
+
       # Use the StackSpotAI-CICD action to run a remote quick command
       - uses: victorsilvazup/stackspot-ai-execute-rqc@main
         id: rqcommand
@@ -44,4 +44,4 @@ jobs:
       - name: Check Remote Quick Command answer
         run: |
           echo "${{ steps.rqc.outputs.rqc_result }}" | python3 -c 'import json, sys; print(json.dumps(json.loads(sys.stdin.read()), indent=4))'
-          echo "${{ steps.rqc.outputs.rqc_result }}" | python3 -c 'import json, sys; print(json.dumps(json.loads(sys.stdin.read()), indent=4))'
+          echo "${{ steps.rqcommand.outputs.rqc_result }}" | python3 -c 'import json, sys; print(json.dumps(json.loads(sys.stdin.read()), indent=4))'
