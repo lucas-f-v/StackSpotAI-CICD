@@ -30,7 +30,7 @@ jobs:
           QC_SLUG: lfv-code-sec-analysis
           FILE_EXTENSION: .md      
 
-      # Use the StackSpotAI-CICD action to run a remote quick command for YAML files
+      # Use the StackSpotAI-CICD aaction to run a remote quick command for YAML files
       - uses: victorsilvazup/stackspot-ai-execute-rqc@main
         id: rqc_yml
         with:
