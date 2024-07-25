@@ -46,11 +46,11 @@ jobs:
 
       # Check the raw result of the Remote Quick Command for Markdown files
       - name: Output Raw Remote Quick Command Result for Markdown
-        run: echo "Raw output for Markdown: ${{ steps.rqc_md.outputs.rqc_result }}"
+        run: echo "${{ steps.rqc_md.outputs.rqc_result }}"
 
       # Check the raw result of the Remote Quick Command for YAML files
       - name: Output Raw Remote Quick Command Result for YAML
-        run: echo "Raw output for YAML: ${{ steps.rqc_yml.outputs.rqc_result }}"
+        run: echo "${{ steps.rqc_yml.outputs.rqc_result }}"
 
       # Check the result of the Remote Quick Command for Markdown files
       - name: Check Remote Quick Command answer for Markdown
