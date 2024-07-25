@@ -29,7 +29,16 @@ jobs:
           CLIENT_KEY: ${{ secrets.STK_CLIENT_KEY }}
           CLIENT_REALM: ${{ secrets.STK_CLIENT_REALM }}
           QC_SLUG: code-analysis
-          FILE_EXTENSION: .md,.yaml
+          FILE_EXTENSION: .md      
+      # Use the StackSpotAI-CICD action to run a remote quick command
+      - uses: victorsilvazup/stackspot-ai-execute-rqc@main
+        id: rqc
+        with:
+          CLIENT_ID: ${{ secrets.STK_CLIENT_ID }}
+          CLIENT_KEY: ${{ secrets.STK_CLIENT_KEY }}
+          CLIENT_REALM: ${{ secrets.STK_CLIENT_REALM }}
+          QC_SLUG: code-analysis
+          FILE_EXTENSION: .yaml
 
       # Check the result of the Remote Quick Command
       - name: Check Remote Quick Command answer
