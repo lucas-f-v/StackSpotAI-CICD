@@ -1,0 +1,16 @@
+name: Print JSON on Command
+
+on:
+  workflow_dispatch:
+
+jobs:
+  print-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print JSON
+        run: |
+          echo '{
+            "name": "StackSpot",
+            "type": "AI Assistant",
+            "features": ["code generation", "code review", "debugging"]
+          }'
