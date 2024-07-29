@@ -11,6 +11,7 @@ permissions:
   issues: write
   pull-requests: write
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,42 +21,28 @@ jobs:
         with: 
           fetch-depth: 2
 
-      # Use the StackSpotAI-CICD action to run a remote quick command for Markdown files
+      # Use the StackSpotAI-CICD action to run a remote quick command
       - uses: victorsilvazup/stackspot-ai-execute-rqc@main
-        id: rqc_md
+        id: rqc
         with:
           CLIENT_ID: ${{ secrets.STK_CLIENT_ID }}
           CLIENT_KEY: ${{ secrets.STK_CLIENT_KEY }}
           CLIENT_REALM: ${{ secrets.STK_CLIENT_REALM }}
-          QC_SLUG: lfv-code-sec-analysis
+          QC_SLUG: code-analysis
           FILE_EXTENSION: .md      
-
-      # Use the StackSpotAI-CICD aaction to run a remote quick command for YAML files
+      # Use the StackSpotAI-CICD action to run a remote quick command
       - uses: victorsilvazup/stackspot-ai-execute-rqc@main
-        id: rqc_yml
+        id: rqcommand
         with:
           CLIENT_ID: ${{ secrets.STK_CLIENT_ID }}
           CLIENT_KEY: ${{ secrets.STK_CLIENT_KEY }}
           CLIENT_REALM: ${{ secrets.STK_CLIENT_REALM }}
-          QC_SLUG: lfv-code-sec-analysis
+          QC_SLUG: code-analysis
           FILE_EXTENSION: .yml
 
-      # Install jq
-      - name: Install jq
-        run: sudo apt-get install -y jq
+      # Check the result of the Remote Quick Command
+      - name: Check Remote Quick Command answer
+        run: |
+          echo "Result ${{ steps.rqc.outputs.rqc_result }}"
+          echo "Result ${{ steps.rqcommand.outputs.rqc_result }}"
 
-      # Check the raw result of the Remote Quick Command for Markdown files
-      - name: Output Raw Remote Quick Command Result for Markdown
-        run: echo "${{ steps.rqc_md.outputs.rqc_result }}"
-
-      # Check the raw result of the Remote Quick Command for YAML files
-      - name: Output Raw Remote Quick Command Result for YAML
-        run: echo "${{ steps.rqc_yml.outputs.rqc_result }}"
-
-      # Check the result of the Remote Quick Command for Markdown files
-      - name: Check Remote Quick Command answer for Markdown
-        run: echo "${{ steps.rqc_md.outputs.rqc_result }}" | jq .
-
-      # Check the result of the Remote Quick Command for YAML files
-      - name: Check Remote Quick Command answer for YAML
-        run: echo "${{ steps.rqc_yml.outputs.rqc_result }}" | jq .
