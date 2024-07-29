@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Print JSON
         run: |
-          echo '{
+          echo '{ /n /n
             "name": "StackSpot",
             "type": "AI Assistant",
             "features": ["code generation", "code review", "debugging"]
