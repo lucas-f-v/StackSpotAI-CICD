@@ -20,3 +20,4 @@ To change the Quick Command, you need to change the QC's slug on line 33 of the 
 BANANA
 user=user
 pass=password
+h
