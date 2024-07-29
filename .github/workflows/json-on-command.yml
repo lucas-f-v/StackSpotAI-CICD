@@ -9,8 +9,4 @@ jobs:
     steps:
       - name: Print JSON
         run: |
-          echo '{ /n /n
-            "name": "StackSpot",
-            "type": "AI Assistant",
-            "features": ["code generation", "code review", "debugging"]
-          }'
+          printf '{\n\n  "name": "StackSpot",\n  "type": "AI Assistant",\n  "features": ["code generation", "code review", "debugging"]\n}\n'
